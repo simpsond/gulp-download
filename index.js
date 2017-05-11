@@ -66,7 +66,7 @@ module.exports = function(urls) {
 		 * @param  {string} data What to log.
 		 */
 		function log(data) {
-			if(config.silent) logger.log(data);
+			if(!config.silent) logger.log(data);
 		}
 	}
 	download(files[0]);
