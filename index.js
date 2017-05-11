@@ -2,10 +2,11 @@ var through = require("through"),
 	gutil = require("gulp-util"),
 	request = require("request"),
 	progress = require("request-progress"),
-	col = gutil.colors;
+	col = gutil.colors,
+	log = gutil.log;
 
 module.exports = function(urls){
-	var stream = through(function(file,enc,cb){
+	var stream = through(function(file, enc, cb){
 		this.push(file);
 		cb();
 	});
@@ -18,7 +19,7 @@ module.exports = function(urls){
 	function download(url){
 		var fileName,
 			firstLog = true;
-		
+
 		if (typeof url === "object") {
 			fileName = url.file;
 			url = url.url;
@@ -26,15 +27,15 @@ module.exports = function(urls){
 			fileName = url.split('/').pop();
 		}
 		progress(
-			request({url:url,encoding:null},downloadHandler),
-			{throttle:1000,delay:1000}
+			request({url:url,encoding:null}, downloadHandler),
+			{throttle: 1000, delay: 1000}
 		)
 		.on('progress',function(state){
 			process.stdout.write(' '+state.percent+'%');
 		})
 		.on('data',function(){
-			if(firstLog){
-				process.stdout.write('['+col.green('gulp')+']'+' Downloading '+col.cyan(url)+'...');
+			if(firstLog) {
+				log('Downloading '+col.cyan(url)+'...');
 				firstLog = false;
 			}
 		});
@@ -56,4 +57,3 @@ module.exports = function(urls){
 
 	return stream;
 };
-
