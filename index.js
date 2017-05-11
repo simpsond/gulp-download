@@ -6,7 +6,7 @@ var progress = require('request-progress');
 var col = gutil.colors;
 var logger = gutil.log;
 
-module.exports = function(urls) {
+module.exports = function(urls, opts) {
 	var stream = through(function(file, enc, cb) {
 		this.push(file);
 		cb();
@@ -16,19 +16,15 @@ module.exports = function(urls) {
 	var files = typeof urls === 'string' ? [urls] : urls;
 	var downloadCount = 0;
 
-	var config = {
-		silent: false,
-	};
+	var config = {};
+	
+	if(typeof opts == undefined) {
+		opts = {};
+	}
+	config.silent = opts.silent || false;
 
 
-	function download(url, opts) {
-		if(typeof opts == undefined) {
-			opts = {};
-		}
-		console.log('here');
-		config.silent = opts.silent || false;
-
-		console.log('here');
+	function download(url) {
 		var fileName;
 		var firstLog = true;
 
