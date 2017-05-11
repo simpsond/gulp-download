@@ -25,8 +25,10 @@ module.exports = function(urls) {
 		if(typeof opts == undefined) {
 			opts = {};
 		}
+		console.log('here');
 		config.silent = opts.silent || false;
 
+		console.log('here');
 		var fileName;
 		var firstLog = true;
 
@@ -62,14 +64,13 @@ module.exports = function(urls) {
 				stream.emit('end');
 			}
 		}
-	}
-
-	/**
-	 * Log information to stdout using gutil.log if logging is enabled
-	 * @param  {string} data What to log.
-	 */
-	function log(data) {
-		if(!config.silent) logger(data);
+		/**
+		 * Log information to stdout using gutil.log if logging is enabled
+		 * @param  {string} data What to log.
+		 */
+		function log(data) {
+			if(!config.silent) logger(data);
+		}
 	}
 
 	download(files[0]);
