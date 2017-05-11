@@ -4,7 +4,7 @@ var gutil = require('gulp-util');
 var request = require('request');
 var progress = require('request-progress');
 var col = gutil.colors;
-var log = gutil.log;
+var logger = gutil.log;
 
 module.exports = function(urls) {
 	var stream = through(function(file, enc, cb) {
@@ -16,8 +16,14 @@ module.exports = function(urls) {
 	var files = typeof urls === 'string' ? [urls] : urls;
 	var downloadCount = 0;
 
+	var config = {
+		silent: false,
+	};
 
-	function download(url) {
+
+	function download(url, opts) {
+		config.silent = opts.silent || false;
+
 		var fileName;
 		var firstLog = true;
 
@@ -52,6 +58,14 @@ module.exports = function(urls) {
 			}else{
 				stream.emit('end');
 			}
+		}
+
+		/**
+		 * Log information to stdout using gutil.log if logging is enabled
+		 * @param  {string} data What to log.
+		 */
+		function log(data) {
+			if(config.silent) logger.log(data);
 		}
 	}
 	download(files[0]);
