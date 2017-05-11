@@ -22,7 +22,9 @@ module.exports = function(urls) {
 
 
 	function download(url, opts) {
-		if(typeof opts == undefined)
+		if(typeof opts == undefined) {
+			opts = {};
+		}
 		config.silent = opts.silent || false;
 
 		var fileName;
